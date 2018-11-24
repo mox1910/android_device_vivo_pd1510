@@ -1,12 +1,10 @@
-Copyright (C) 2016 - The CyanogenMod Project
+Copyright (C) 2018 - The LineageOS Project
 
-Copyright (C) 2017 - The LineageOS Project
-
-Device configuration for Redmi 2 / Pro / Prime (wt88047)
+Device configuration for vivo Y51 (pd1510)
 ========================================================
 
-The Wingtech Redmi 2 (codenamed _"wt88047"_) is a mid-range smartphone from Wingtech.
-It was announced on January 2015.
+The vivo Y51 (codenamed _"pd1510"_) is a mid-range smartphone from vivo.
+It was announced on January 2016.
 
 ## Device specifications
 
@@ -15,16 +13,14 @@ Basic   | Spec Sheet
 SoC     | Qualcomm MSM8916 Snapdragon 410
 CPU     | Quad-core 1.2 GHz ARM® Cortex™ A53
 GPU     | 400MHz Adreno 306
-Memory  | 1/2 GB RAM
-Shipped Android Version | 4.4.4
-Storage | 8/16 GB
-MicroSD | Up to 32 GB
-Battery | Removable Li-Ion 2200mAh battery
-Dimensions | 134 x 67.2 x 9.4 mm
-Display | 720 x 1280 pixels, 4.7 inches (~312 ppi pixel density)
-Rear Camera | 8 MP, f/2.2, 28mm, autofocus, LED flash
-Front Camera | 2 MP, 720p
+Memory  | 2 GB RAM
+Shipped Android Version | 5.0.2
+Storage | 16 GB
+MicroSD | Up to 128 GB
+Battery | Removable Li-Ion 2300mAh battery
+Dimensions | 143.8 x 71.7 x 7.52 mm
+Display | 540 x 960 pixels, 5.0 inches (~220 ppi pixel density)
+Rear Camera | 8 MP, autofocus, LED flash
+Front Camera | 5 MP, 720p
 
-## Device picture
-
-![Redmi 2](http://cdn.ndtv.com/tech/xiaomi_redmi_2_white_screen.jpg "Redmi 2 in white")
+![vivo Y51](http://cdn.ndtv.com/tech/vivo_y51.jpg "vivo Y51 in white")

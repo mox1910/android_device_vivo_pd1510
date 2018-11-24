@@ -14,8 +14,10 @@ vendor/lib/soundfx/libqcbassboost.so|8ed65760940653ada21d72cd5fb7b66174cbc422
 vendor/lib/soundfx/libqcreverb.so|725ce9f7d696dae58da423f33dbbf2abcf16b9ac
 vendor/lib/soundfx/libqcvirt.so|5393f3a58247619413f35b7550d48e7cc0bd39d5
 
+# Battery - from jalebi
+bin/vm_bms:vendor/bin/vm_bms|19406da78d9cbdb8eb1a452c6d89728595801fad
+
 # Bluetooth - from jalebi
-bin/btnvtool:vendor/bin/btnvtool|2a673ba673797ecdce19617eb260b791f317eff9
 bin/hci_qcomm_init:vendor/bin/hci_qcomm_init|717a6d532ad9454d86be81c9ca8079711f2cc628
 vendor/lib/libbtnv.so|b4b692e2a89f97677d66cb26152cade106bb1cc4
 
@@ -31,7 +33,6 @@ vendor/lib/libmmcamera2_imglib_modules.so
 vendor/lib/libmmcamera2_isp_modules.so
 vendor/lib/libmmcamera2_is.so
 vendor/lib/libmmcamera2_pproc_modules.so
-vendor/lib/libmmcamera2_q3a_core.so
 vendor/lib/libmmcamera2_sensor_modules.so
 vendor/lib/libmmcamera2_stats_algorithm.so
 vendor/lib/libmmcamera2_stats_modules.so
@@ -45,7 +46,6 @@ vendor/lib/libmmcamera_pdafcamif.so
 vendor/lib/libmmcamera_pdaf.so
 vendor/lib/libmmcamera_tintless_algo.so|8b63827904bdbe1e99bf2e153ef41f5e925fea98
 vendor/lib/libmmcamera_tintless_bg_pca_algo.so|a54f8613581f08834028a38d7a2da70ffbf86ae6
-vendor/lib/libmmcamera_tuning.so
 vendor/lib/libmmcamera_wavelet_lib.so|76091fd9dfbefd06e108e0d129976d8dffd27fb1
 vendor/lib/libmmipl.so|8ba0f6611f8b7b1bdc05f47e7f708d2da826b32b
 vendor/lib/libmmjpeg.so|159dac7e57174dfd6fd2820499d5cef4b3f05112
@@ -54,65 +54,132 @@ vendor/lib/liboemcamera.so
 vendor/lib/libqomx_jpegenc.so|ab7407926128697ab086a69f8834e1cf76932946
 
 # Camera actuator
-vendor/lib/libactuator_dw9714_13p1ba_h2x_camcorder.so
-vendor/lib/libactuator_dw9714_13p1ba_h2x_camera.so
-vendor/lib/libactuator_dw9714_13p1ba_h2x.so
+vendor/lib/libactuator_a3907_camcorder.so
+vendor/lib/libactuator_a3907_camera.so
+vendor/lib/libactuator_a3907.so
+vendor/lib/libactuator_ad5823_8858_1a_camcorder.so
+vendor/lib/libactuator_ad5823_8858_1a_camera.so
+vendor/lib/libactuator_ad5823_8858_1a.so
+vendor/lib/libactuator_ad5823_camcorder.so
+vendor/lib/libactuator_ad5823_camera.so
+vendor/lib/libactuator_ad5823.so
+vendor/lib/libactuator_ad5823_truly_camcorder.so
+vendor/lib/libactuator_ad5823_truly_camera.so
+vendor/lib/libactuator_ad5823_truly.so
+vendor/lib/libactuator_bu64245_camcorder.so
+vendor/lib/libactuator_bu64245_camera.so
+vendor/lib/libactuator_bu64245.so
+vendor/lib/libactuator_dw9714_13p1ba_camcorder.so
+vendor/lib/libactuator_dw9714_13p1ba_camera.so
+vendor/lib/libactuator_dw9714_13p1ba.so
 vendor/lib/libactuator_dw9714_camcorder.so
 vendor/lib/libactuator_dw9714_camera.so
+vendor/lib/libactuator_dw9714_q13n04a_camcorder.so
+vendor/lib/libactuator_dw9714_q13n04a_camera.so
+vendor/lib/libactuator_dw9714_q13n04a.so
+vendor/lib/libactuator_dw9714_q13v04b_camcorder.so
+vendor/lib/libactuator_dw9714_q13v04b_camera.so
+vendor/lib/libactuator_dw9714_q13v04b.so
 vendor/lib/libactuator_dw9714.so
-vendor/lib/libactuator_dw9714_meituosi_h2x_camcorder.so
-vendor/lib/libactuator_dw9714_meituosi_h2x_camera.so
-vendor/lib/libactuator_dw9714_meituosi_h2x.so
-vendor/lib/libactuator_dw9714_sikao_h2x_camcorder.so
-vendor/lib/libactuator_dw9714_sikao_h2x_camera.so
-vendor/lib/libactuator_dw9714_sikao_h2x.so
-vendor/lib/libactuator_dw9718s_camcorder.so
-vendor/lib/libactuator_dw9718s_camera.so
-vendor/lib/libactuator_dw9718s.so
+vendor/lib/libactuator_dw9716_camcorder.so
+vendor/lib/libactuator_dw9716_camera.so
+vendor/lib/libactuator_dw9716.so
+vendor/lib/libactuator_dw9761b_camcorder.so
+vendor/lib/libactuator_dw9761b_camera.so
+vendor/lib/libactuator_dw9761b.so
+vendor/lib/libactuator_dw9800_camcorder.so
+vendor/lib/libactuator_dw9800_camera.so
+vendor/lib/libactuator_dw9800.so
+vendor/lib/libactuator_iu074_camcorder.so
+vendor/lib/libactuator_iu074_camera.so
+vendor/lib/libactuator_iu074.so
+vendor/lib/libactuator_ov12830_camcorder.so
+vendor/lib/libactuator_ov12830_camera.so
+vendor/lib/libactuator_ov12830.so
+vendor/lib/libactuator_ov8825_camcorder.so
+vendor/lib/libactuator_ov8825_camera.so
+vendor/lib/libactuator_ov8825.so
 vendor/lib/libactuator_rohm_bu64243gwz_camcorder.so
 vendor/lib/libactuator_rohm_bu64243gwz_camera.so
 vendor/lib/libactuator_rohm_bu64243gwz.so
-vendor/lib/libactuator_rohm_bu64243gwz_a11_camcorder.so
-vendor/lib/libactuator_rohm_bu64243gwz_a11_camera.so
-vendor/lib/libactuator_rohm_bu64243gwz_a11.so
-vendor/lib/libactuator_rohm_bu64243gwz_h2x_camcorder.so
-vendor/lib/libactuator_rohm_bu64243gwz_h2x_camera.so
-vendor/lib/libactuator_rohm_bu64243gwz_h2x.so
 
 # Camera chromatix
-vendor/lib/libchromatix_ov2680_common.so
-vendor/lib/libchromatix_ov2680_default_video.so
-vendor/lib/libchromatix_ov2680_snapshot.so
-vendor/lib/libchromatix_ov2680_5987fhq_common.so
-vendor/lib/libchromatix_ov2680_5987fhq_default_video.so
-vendor/lib/libchromatix_ov2680_5987fhq_snapshot.so
-vendor/lib/libchromatix_ov8865_q8v18a_common.so
-vendor/lib/libchromatix_ov8865_q8v18a_default_video.so
-vendor/lib/libchromatix_ov8865_q8v18a_hfr_120fps.so
-vendor/lib/libchromatix_ov8865_q8v18a_hfr_60fps.so
-vendor/lib/libchromatix_ov8865_q8v18a_hfr_90fps.so
-vendor/lib/libchromatix_ov8865_q8v18a_liveshot.so
-vendor/lib/libchromatix_ov8865_q8v18a_preview.so
-vendor/lib/libchromatix_ov8865_q8v18a_snapshot.so
-vendor/lib/libchromatix_ov8865_qtech_common.so
-vendor/lib/libchromatix_ov8865_qtech_default_video.so
-vendor/lib/libchromatix_ov8865_qtech_hfr_120fps.so
-vendor/lib/libchromatix_ov8865_qtech_hfr_60fps.so
-vendor/lib/libchromatix_ov8865_qtech_hfr_90fps.so
-vendor/lib/libchromatix_ov8865_qtech_liveshot.so
-vendor/lib/libchromatix_ov8865_qtech_preview.so
-vendor/lib/libchromatix_ov8865_qtech_snapshot.so
-vendor/lib/libchromatix_ov8865_sunny_common.so
-vendor/lib/libchromatix_ov8865_sunny_default_video.so
-vendor/lib/libchromatix_ov8865_sunny_hfr_120fps.so
-vendor/lib/libchromatix_ov8865_sunny_hfr_60fps.so
-vendor/lib/libchromatix_ov8865_sunny_hfr_90fps.so
-vendor/lib/libchromatix_ov8865_sunny_liveshot.so
-vendor/lib/libchromatix_ov8865_sunny_preview.so
-vendor/lib/libchromatix_ov8865_sunny_snapshot.so
+vendor/lib/libchromatix_ov13853_q13853a_common.so
+vendor/lib/libchromatix_ov13853_q13853a_common_new.so
+vendor/lib/libchromatix_ov13853_q13853a_default_video.so
+vendor/lib/libchromatix_ov13853_q13853a_hfr_120fps.so
+vendor/lib/libchromatix_ov13853_q13853a_hfr_60fps.so
+vendor/lib/libchromatix_ov13853_q13853a_hfr_90fps.so
+vendor/lib/libchromatix_ov13853_q13853a_liveshot.so
+vendor/lib/libchromatix_ov13853_q13853a_preview.so
+vendor/lib/libchromatix_ov13853_q13853a_preview_sport.so
+vendor/lib/libchromatix_ov13853_q13853a_snapshot.so
+vendor/lib/libchromatix_ov13853_q13853a_snapshot_sport.so
+vendor/lib/libchromatix_ov8858_2a_common.so
+vendor/lib/libchromatix_ov8858_2a_default_video.so
+vendor/lib/libchromatix_ov8858_2a_hfr_120fps.so
+vendor/lib/libchromatix_ov8858_2a_hfr_60fps.so
+vendor/lib/libchromatix_ov8858_2a_hfr_90fps.so
+vendor/lib/libchromatix_ov8858_2a_liveshot.so
+vendor/lib/libchromatix_ov8858_2a_preview.so
+vendor/lib/libchromatix_ov8858_2a_preview_sport.so
+vendor/lib/libchromatix_ov8858_2a_snapshot.so
+vendor/lib/libchromatix_ov8858_2a_snapshot_sport.so
+vendor/lib/libchromatix_ov8858_2a_video_binning.so
+vendor/lib/libchromatix_ov8858_2a_zsl.so
+vendor/lib/libchromatix_ov8858_common.so
+vendor/lib/libchromatix_ov8858_default_video.so
+vendor/lib/libchromatix_ov8858_liveshot.so
+vendor/lib/libchromatix_ov8858_preview.so
+vendor/lib/libchromatix_ov8858_snapshot.so
+vendor/lib/libchromatix_ov8858_video_hd.so
+vendor/lib/libchromatix_ov8858_zsl.so
+vendor/lib/libchromatix_s5k4h8_rear_common.so
+vendor/lib/libchromatix_s5k4h8_rear_default_video.so
+vendor/lib/libchromatix_s5k4h8_rear_liveshot.so
+vendor/lib/libchromatix_s5k4h8_rear_preview.so
+vendor/lib/libchromatix_s5k4h8_rear_snapshot.so
+vendor/lib/libchromatix_s5k4h8_rear_snapshot_facebeauty.so
+vendor/lib/libchromatix_s5k4h8_rear_snapshot_sport.so
+vendor/lib/libchromatix_s5k4h8_rear_zsl.so
+vendor/lib/libchromatix_s5k4h8_rear_zsl_facebeauty.so
+vendor/lib/libchromatix_s5k4h8_rear_zsl_sport.so
+vendor/lib/libchromatix_ov5648_common.so
+vendor/lib/libchromatix_ov5648_default_video_hd.so
+vendor/lib/libchromatix_ov5648_default_video.so
+vendor/lib/libchromatix_ov5648_nightmode.so
+vendor/lib/libchromatix_ov5648_preview.so
+vendor/lib/libchromatix_ov5648_snapshot.so
+vendor/lib/libchromatix_ov5648_zsl.so
+vendor/lib/libchromatix_s5k4h8_common.so
+vendor/lib/libchromatix_s5k4h8_default_video.so
+vendor/lib/libchromatix_s5k4h8_liveshot.so
+vendor/lib/libchromatix_s5k4h8_preview.so
+vendor/lib/libchromatix_s5k4h8_snapshot.so
+vendor/lib/libchromatix_s5k4h8_snapshot_facebeauty.so
+vendor/lib/libchromatix_s5k4h8_snapshot_sport.so
+vendor/lib/libchromatix_s5k4h8_zsl.so
+vendor/lib/libchromatix_s5k4h8_zsl_facebeauty.so
+vendor/lib/libchromatix_s5k4h8_zsl_sport.so
+vendor/lib/libchromatix_s5k5e2_common.so
+vendor/lib/libchromatix_s5k5e2_default_video.so
+vendor/lib/libchromatix_s5k5e2_hfr_120.so
+vendor/lib/libchromatix_s5k5e2_preview_portrait.so
+vendor/lib/libchromatix_s5k5e2_preview.so
+vendor/lib/libchromatix_s5k5e2_snapshot_portrait.so
+vendor/lib/libchromatix_s5k5e2_snapshot.so
+vendor/lib/libchromatix_s5k5e2_zsl.so
+vendor/lib/libchromatix_hi259_common.so
+vendor/lib/libchromatix_hi259_preview.so
+vendor/lib/libchromatix_hi259_snapshot.so
+vendor/lib/libchromatix_hi259_video.so
+vendor/lib/libchromatix_hi259_zsl.so
 
 # Camera eeprom
-vendor/lib/libmmcamera_sunny_q8v18a_eeprom.so
+vendor/lib/libmmcamera_truly_cm9461_ov8858_2a_eeprom.so
+vendor/lib/libmmcamera_truly_s5k5e2_eeprom.so
+vendor/lib/libmmcamera_truly_cm9461_eeprom.so
+vendor/lib/libmmcamera_s5k4h8_rear_eeprom.so
 
 # Camera firmware
 etc/firmware/cpp_firmware_v1_1_1.fw:vendor/firmware/cpp_firmware_v1_1_1.fw
@@ -121,9 +188,14 @@ etc/firmware/cpp_firmware_v1_2_0.fw:vendor/firmware/cpp_firmware_v1_2_0.fw
 etc/firmware/cpp_firmware_v1_4_0.fw:vendor/firmware/cpp_firmware_v1_4_0.fw
 
 # Camera sensors
-vendor/lib/libmmcamera_ov2680_5987fhq.so
-vendor/lib/libmmcamera_ov2680_skuhf.so
-vendor/lib/libmmcamera_ov8865_q8v18a.so
+vendor/lib/libmmcamera_ov13853_q13853a.so
+vendor/lib/libmmcamera_ov8858_2a.so
+vendor/lib/libmmcamera_ov8858.so
+vendor/lib/libmmcamera_s5k4h8_rear.so
+vendor/lib/libmmcamera_ov5648.so
+vendor/lib/libmmcamera_s5k4h8.so
+vendor/lib/libmmcamera_s5k5e2.so
+vendor/lib/libmmcamera_hi259.so
 
 # DRM - from jalebi
 bin/qseecomd:vendor/bin/qseecomd|8d12dbee4e86a7af7ff76a9ff64c339adce8eb36
@@ -194,6 +266,8 @@ vendor/lib/libmm-qdcm.so|00413d3c2e3b6a0b43f1a315af33592bec1d952c
 
 # Qualcomm framework - from jalebi
 bin/irsc_util:vendor/bin/irsc_util|3e9ca860ef26dba7024812c378b6c5cd15b879aa
+etc/data/dsi_config.xml:vendor/etc/data/dsi_config.xml|0a8e28e484e0ca121651bf8c9d5617687ff2b796
+etc/data/netmgr_config.xml:vendor/etc/data/netmgr_config.xml|b013b5cb704cbd6fa8eedfb279e1ef3d4cc12a6c
 vendor/lib/libdiag.so|9bc420c1605f83f7b2c0cfd10e4d2a32ff1fb172
 vendor/lib/libdsi_netctrl.so|eb7deafd9cda2fc082b2623e4b1649e8dee44abc
 vendor/lib/libdsutils.so|4e6f2aff61471165cf76e67ae1c034b7d732d42b
@@ -211,7 +285,7 @@ vendor/lib/libqmiservices.so|25e8803032ab9c191ffcf45507286abc72460c7d
 vendor/lib/libqmi.so|c2757b4043e07372078b1762016793ca1bbd407a
 vendor/lib/libsmemlog.so|b87c633d0faa143db4744bd17de5b03d600df15e
 
-# Radio
+# Radio - from jalebi
 -app/shutdownlistener/shutdownlistener.apk:vendor/app/shutdownlistener/shutdownlistener.apk|39061bdec43a83c496f7ad4d8faed54317efb0ef
 bin/netmgrd:vendor/bin/netmgrd|690b40be325c86050da7fe3b3111ae00b8b886bf
 bin/qmuxd:vendor/bin/qmuxd|3d05c6d9c5c2ac2a0fb62cbcecd279557d7b46de
@@ -241,7 +315,7 @@ vendor/lib/libxml.so|8b9cae9b4d1525e7fea093d6a53f363c842f3076
 bin/imscmservice:vendor/bin/imscmservice|2b6bb0cc2c244885556fe5c6ee75733b59ea1910
 bin/imsdatadaemon:vendor/bin/imsdatadaemon|30cb68236f5c8f6fe0d78f0e772a33405c5cf58b
 bin/imsqmidaemon:vendor/bin/imsqmidaemon|00c1cd071898fc7883b98b53c507d07e8b262e63
-etc/permissions/ims.xml:vendor/etc/ims.xml|b77963459ea6664a0eddcbc5ca7f4220e4895c26
+etc/permissions/ims.xml:vendor/etc/permissions/ims.xml|b77963459ea6664a0eddcbc5ca7f4220e4895c26
 etc/permissions/imscm.xml:vendor/etc/permissions/imscm.xml|8b99ec26c783966bbea1fcb8e72c7c0206a4e802
 etc/permissions/qti_permissions.xml:vendor/etc/permissions/qti_permissions.xml|fd8a1db3c18b6d58334d747e47f4b155bb612039
 vendor/lib/lib-dplmedia.so|93af0d85c31b197efdbde915ff8f7bc404243f87
@@ -268,7 +342,7 @@ vendor/lib/librcc.so|a409377843c8c0af7f92beac09048927e36e7ca0
 vendor/lib/libvoice-svc.so|fe8d2807b5b1a35310a9bcf80ceb4467503130b0
 
 # Sensors
-vendor/lib/libcalmodule_akm.so
+vendor/lib/libcalmodule_alps_hscdtd007a.so
 vendor/lib/libcalmodule_yamaha.so
 vendor/lib/libcalmodule_gyroscope.so
 
@@ -280,9 +354,6 @@ etc/firmware/venus.b03:vendor/firmware/venus.b03
 etc/firmware/venus.b04:vendor/firmware/venus.b04
 etc/firmware/venus.mbn:vendor/firmware/venus.mbn
 etc/firmware/venus.mdt:vendor/firmware/venus.mdt
-
-# STLport - from flo
-vendor/lib/libstlport.so|e61ef21decc21472e06eacc841e7d61bf68ca9f3
 
 # Thermal - from jalebi
 vendor/bin/thermal-engine|5d7e03971fdc7f2e16c84a72430734bcb7328e82
@@ -298,5 +369,5 @@ vendor/lib/libTimeService.so|6e02ea970f245a374d3dd4a13a814b33eb5e7878
 # Widevine - from angler - OPR6.170623.017 factory image
 vendor/lib/mediadrm/libwvdrmengine.so|66ba66d047044f92eb0eada1faf6a5799ded90ab
 
-# WLAN
-lib/libwcnss_qmi.so:vendor/lib/libwcnss_qmi.so
+# WLAN - from rendang
+lib/libwcnss_qmi.so:vendor/lib/libwcnss_qmi.so|3ca8d78f40f92c9feb0aa9507cbc0bfcb28bf9f1

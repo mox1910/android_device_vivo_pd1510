@@ -14,12 +14,5 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := $(call my-dir)
-
-ifeq ($(TARGET_DEVICE), pd1510)
-
-include $(call all-makefiles-under,$(LOCAL_PATH))
-
-include $(CLEAR_VARS)
-
-endif
+PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/full_pd1510.mk
