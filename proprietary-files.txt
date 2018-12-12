@@ -296,6 +296,8 @@ etc/permissions/qcrilhook.xml:vendor/etc/permissions/qcrilhook.xml
 -framework/qcnvitems.jar:vendor/framework/qcnvitems.jar|ec64c7eedf68489a93b2831ec146105d672d353f
 -framework/qcrilhook.jar:vendor/framework/qcrilhook.jar|c867423053edbc7f307e53220faba66efdc25846
 -priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk|cea7f8624d386c9538102f4d5063005f0caedab4
+vendor/lib/com.quicinc.cne.api@1.0.so|60dd6f1fa0c70523f91342b07be6c82e733cdb90
+vendor/lib/com.quicinc.cne.constants@1.0.so|0d3b2fd95e8ea3525467d8ca38865ac2a9d3f4c7
 vendor/lib/libcneapiclient.so|9b88e710fcf5e2c688a5da9f40959c10fb8f2449
 vendor/lib/libconfigdb.so|0baff7fcba0f1a22b8ec1b08f6068579ed527452
 vendor/lib/liblqe.so|e4a40f8675c5b52f1bb71aa2fea62d7ffcd9b003
