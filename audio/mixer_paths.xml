@@ -82,6 +82,7 @@
     <ctl name="HPHL" value="ZERO" />
     <ctl name="HPHR" value="ZERO" />
     <ctl name="Ext Spk Switch" value="Off" />
+    <ctl name="Ext Headset Switch" value="Off" />
     <ctl name="Speaker Boost" value="ENABLE" />
     <ctl name="MICBIAS CAPLESS Switch" value="0" />
     <ctl name="EAR PA Boost" value="ENABLE" />
@@ -743,6 +744,7 @@
         <ctl name="RDAC2 MUX" value="RX2" />
         <ctl name="HPHL" value="Switch" />
         <ctl name="HPHR" value="Switch" />
+        <ctl name="Ext Headset Switch" value="Off" />
         <ctl name="Ext Spk Switch" value="On" />
     </path>
 
@@ -787,6 +789,8 @@
         <ctl name="RDAC2 MUX" value="RX2" />
         <ctl name="HPHL" value="Switch" />
         <ctl name="HPHR" value="Switch" />
+        <ctl name="Ext Spk Switch" value="Off" />
+        <ctl name="Ext Headset Switch" value="On" />
     </path>
 
     <path name="headphone-hifi">
@@ -834,6 +838,7 @@
         <ctl name="RDAC2 MUX" value="RX2" />
         <ctl name="HPHL" value="Switch" />
         <ctl name="HPHR" value="Switch" />
+        <ctl name="Ext Headset Switch" value="On" />
         <ctl name="Ext Spk Switch" value="On" />
     </path>
 
