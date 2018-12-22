@@ -787,6 +787,7 @@
         <ctl name="RDAC2 MUX" value="RX2" />
         <ctl name="HPHL" value="Switch" />
         <ctl name="HPHR" value="Switch" />
+        <ctl name="Ext Spk Switch" value="Off" />
     </path>
 
     <path name="headphone-hifi">
