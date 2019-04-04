@@ -22,7 +22,6 @@ bin/hci_qcomm_init:vendor/bin/hci_qcomm_init|717a6d532ad9454d86be81c9ca8079711f2
 vendor/lib/libbtnv.so|b4b692e2a89f97677d66cb26152cade106bb1cc4
 
 # Camera
-bin/mm-qcamera-app:vendor/bin/mm-qcamera-app
 bin/mm-qcamera-daemon:vendor/bin/mm-qcamera-daemon
 vendor/lib/libjpegdhw.so|e6fbda13a222eabec676ae8e0e1214810ccb7ab6
 vendor/lib/libjpegehw.so|17d0f41e191ae72b065ef70a092dd061185906f2
