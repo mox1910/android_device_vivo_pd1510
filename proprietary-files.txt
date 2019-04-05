@@ -193,7 +193,7 @@ vendor/lib/libmmcamera_ov8858_2a.so
 vendor/lib/libmmcamera_ov8858.so
 vendor/lib/libmmcamera_s5k4h8_rear.so
 vendor/lib/libmmcamera_ov5648.so
-vendor/lib/libmmcamera_s5k4h8.so
+vendor/lib/libmmcamera_s5k4h8.so8d12dbee4e86a7af7ff76a9ff64c339adce8eb36
 vendor/lib/libmmcamera_s5k5e2.so
 vendor/lib/libmmcamera_hi259.so
 
