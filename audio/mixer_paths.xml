@@ -1,33 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--
-    Copyright (c) 2014, The Linux Foundation. All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are
-    met:
-        * Redistributions of source code must retain the above copyright
-          notice, this list of conditions and the following disclaimer.
-        * Redistributions in binary form must reproduce the above
-          copyright notice, this list of conditions and the following
-          disclaimer in the documentation and/or other materials provided
-          with the distribution.
-        * Neither the name of The Linux Foundation nor the names of its
-          contributors may be used to endorse or promote products derived
-          from this software without specific prior written permission.
-
-    THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
-    WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
-    ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
-    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-    BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-    OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-
 <mixer>
     <!-- These are the initial mixer settings -->
     <ctl name="Voice Rx Device Mute" id="0" value="0" />
@@ -78,14 +49,15 @@
     <ctl name="RX1 MIX1 INP2" value="ZERO" />
     <ctl name="RX1 MIX1 INP1" value="ZERO" />
     <ctl name="IIR1 INP1 MUX" value="ZERO" />
+    <ctl name="EAR_S Switch" value="0" />
     <ctl name="EAR_S" value="ZERO" />
     <ctl name="HPHL" value="ZERO" />
     <ctl name="HPHR" value="ZERO" />
     <ctl name="Ext Spk Switch" value="Off" />
     <ctl name="Speaker Boost" value="ENABLE" />
     <ctl name="MICBIAS CAPLESS Switch" value="0" />
-    <ctl name="EAR PA Boost" value="ENABLE" />
     <ctl name="EAR PA Gain" value="POS_1P5_DB" />
+    <ctl name="EAR PA Boost" value="ENABLE" />
     <ctl name="MI2S_RX Channels" value="One" />
     <ctl name="MI2S_TX Channels" value="One" />
     <ctl name="VOC_EXT_EC MUX" value="NONE" />
@@ -251,11 +223,11 @@
     <path name="deep-buffer-playback speaker-and-headphones">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia1" value="1" />
     </path>
-
+    
     <path name="deep-buffer-playback speaker">
         <path name="deep-buffer-playback" />
     </path>
-
+    
     <path name="deep-buffer-playback headphone-hifi">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia1" value="1" />
     </path>
@@ -265,6 +237,7 @@
     </path>
 
     <path name="deep-buffer-playback bt-sco-wb">
+        <ctl name="Internal BTSCO SampleRate" value="16000" />
         <path name="deep-buffer-playback bt-sco" />
     </path>
 
@@ -292,15 +265,15 @@
     <path name="low-latency-playback headphones">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia5" value="1" />
     </path>
-
+    
     <path name="low-latency-playback speaker-and-headphones">
-         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia5" value="1" />
+	      <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia5" value="1" />
     </path>
-
+    
     <path name="low-latency-playback speaker">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia1" value="1" />
     </path>
-
+    
     <path name="low-latency-playback headphone-hifi">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia5" value="1" />
     </path>
@@ -310,6 +283,7 @@
     </path>
 
     <path name="low-latency-playback bt-sco-wb">
+        <ctl name="Internal BTSCO SampleRate" value="16000" />
         <path name="low-latency-playback bt-sco" />
     </path>
 
@@ -333,15 +307,15 @@
     <path name="compress-offload-playback">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia4" value="1" />
     </path>
-
+    
     <path name="compress-offload-playback speaker">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia4" value="1" />
     </path>
-
+    
     <path name="compress-offload-playback headphone-hifi">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia4" value="1" />
     </path>
-
+    
     <path name="compress-offload-playback headphones">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia4" value="1" />
     </path>
@@ -432,12 +406,12 @@
         <ctl name="Voice_Tx Mixer TERT_MI2S_TX_Voice" value="1" />
         <ctl name="PRI_MI2S_RX_Voice Mixer CSVoice" value="1" />
     </path>
-
+    
     <path name="voice-call speaker">
         <ctl name="Voice_Tx Mixer TERT_MI2S_TX_Voice" value="1" />
         <ctl name="PRI_MI2S_RX_Voice Mixer CSVoice" value="1" />
     </path>
-
+    
     <path name="voice-call headphones">
         <ctl name="Voice_Tx Mixer TERT_MI2S_TX_Voice" value="1" />
         <ctl name="PRI_MI2S_RX_Voice Mixer CSVoice" value="1" />
@@ -462,7 +436,7 @@
     <path name="low-latency-playback voice-speaker">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia5" value="1" />
     </path>
-
+    
     <path name="low-latency-playback voice-headphones">
         <ctl name="PRI_MI2S_RX Audio Mixer MultiMedia5" value="1" />
     </path>
@@ -666,12 +640,12 @@
         <ctl name="PRI_MI2S_RX_Voice Mixer Voip" value="1" />
         <ctl name="Voip_Tx Mixer TERT_MI2S_TX_Voip" value="1" />
     </path>
-
+	
     <path name="compress-voip-call voice-headphones">
         <ctl name="PRI_MI2S_RX_Voice Mixer Voip" value="1" />
         <ctl name="Voip_Tx Mixer TERT_MI2S_TX_Voip" value="1" />
     </path>
-
+    
     <path name="compress-voip-call headphones">
         <ctl name="PRI_MI2S_RX_Voice Mixer Voip" value="1" />
         <ctl name="Voip_Tx Mixer TERT_MI2S_TX_Voip" value="1" />
@@ -736,6 +710,11 @@
         <ctl name="MICBIAS CAPLESS Switch" value="1" />
     </path>
 
+    <path name="adc3">
+        <ctl name="DEC1 MUX" value="ADC2" />
+        <ctl name="ADC2 MUX" value="INP3" />
+    </path>
+
     <path name="speaker">
         <ctl name="MI2S_RX Channels" value="One" />
         <ctl name="RX1 MIX1 INP1" value="RX1" />
@@ -743,15 +722,15 @@
         <ctl name="RDAC2 MUX" value="RX2" />
         <ctl name="HPHL" value="Switch" />
         <ctl name="HPHR" value="Switch" />
-        <ctl name="Ext Spk Switch" value="On" />
+        <ctl name="Speaker Yda145" value="ENABLE" />
     </path>
 
     <path name="Speaker">
-        <path name="speaker" />
+    	  <path name="speaker" />
     </path>
-
+    
     <path name="Voice Speaker">
-          <path name="speaker" />
+    	  <path name="speaker" />
     </path>
 
     <path name="speaker-mic">
@@ -771,11 +750,11 @@
         <path name="adc1" />
         <ctl name="IIR1 INP1 MUX" value="DEC1" />
     </path>
-
+    
     <path name="rec-handset">
         <path name="handset-mic" />
     </path>
-
+    
     <path name="vr-handset">
         <path name="handset-mic" />
     </path>
@@ -863,7 +842,7 @@
     <path name="bt-sco-headset">
     </path>
 
-    <path name="bt-sco-mic">
+   <path name="bt-sco-mic">
     </path>
 
     <path name="bt-sco-headset-wb">
@@ -916,6 +895,10 @@
 
     <path name="speaker-stereo-dmic-ef">
         <path name="speaker-dmic-endfire" />
+    </path>
+
+    <path name="echo-reference">
+        <ctl name="AUDIO_REF_EC_UL1 MUX" value="I2S_RX" />
     </path>
 
     <!-- TTY devices -->
