@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018 The LineageOS Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, device/vivo/pd1510/device.mk)
 
 # Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := Y51
+PRODUCT_DEVICE := pd1510
 PRODUCT_NAME := full_pd1510
-PRODUCT_BRAND := vivo
-PRODUCT_MODEL := vivo Y51
-PRODUCT_MANUFACTURER := vivo
+PRODUCT_BRAND := Vivo
+PRODUCT_MODEL := Y51
+PRODUCT_MANUFACTURER := Vivo

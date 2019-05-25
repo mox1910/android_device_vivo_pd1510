@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #include <utils/Errors.h>
 #include <hardware/camera.h>
-#include <sensor/SensorManager.h>
+#include <gui/SensorManager.h>
 
 #include "QCamera2Factory.h"
 
@@ -227,7 +227,7 @@ int QCamera2Factory::camera_device_open(
 }
 
 struct hw_module_methods_t QCamera2Factory::mModuleMethods = {
-    .open = QCamera2Factory::camera_device_open,
+    open: QCamera2Factory::camera_device_open,
 };
 
 }; // namespace qcamera

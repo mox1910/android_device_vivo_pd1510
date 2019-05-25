@@ -16,8 +16,6 @@
 
 #define LOG_TAG "Sensors"
 
-#include <gui/SensorManager.h>
-
 #include <stdint.h>
 #include <sys/types.h>
 
@@ -28,10 +26,11 @@
 #include <binder/IBinder.h>
 #include <binder/IServiceManager.h>
 
-#include <sensor/ISensorEventConnection.h>
-#include <sensor/ISensorServer.h>
-#include <sensor/Sensor.h>
-#include <sensor/SensorEventQueue.h>
+#include <gui/ISensorServer.h>
+#include <gui/ISensorEventConnection.h>
+#include "gui/Sensor.h"
+#include "gui/SensorManager.h"
+#include <gui/SensorEventQueue.h>
 
 // ----------------------------------------------------------------------------
 namespace android {
@@ -62,7 +61,7 @@ void SensorManager::sensorManagerDied()
     mSensors.clear();
 }
 
-status_t SensorManager::assertStateLocked() {
+status_t SensorManager::assertStateLocked() const {
     if (mSensorServer == NULL) {
         // try for one second
         const String16 name("sensorservice");
@@ -105,7 +104,9 @@ status_t SensorManager::assertStateLocked() {
     return NO_ERROR;
 }
 
-ssize_t SensorManager::getSensorList(Sensor const* const** list)
+
+
+ssize_t SensorManager::getSensorList(Sensor const* const** list) const
 {
     Mutex::Autolock _l(mLock);
     status_t err = assertStateLocked();

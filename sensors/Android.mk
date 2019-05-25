@@ -1,3 +1,5 @@
+ifeq ($(TARGET_DEVICE),wt88047)
+
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -27,16 +29,9 @@ LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
 LOCAL_SHARED_LIBRARIES := liblog libcutils libdl libxml2 libutils
 
-LOCAL_MODULE := sensors.$(TARGET_DEVICE)
+LOCAL_MODULE := sensors.msm8916
+LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE_TAGS := optional
-LOCAL_VENDOR_MODULE := true
-
-# Export calibration library needed dependency headers
-LOCAL_COPY_HEADERS_TO := sensors/inc
-LOCAL_COPY_HEADERS := \
-    CalibrationModule.h \
-    sensors_extension.h \
-    sensors.h
 
 include $(BUILD_SHARED_LIBRARY)
 
@@ -53,7 +48,7 @@ LOCAL_SRC_FILES := \
 LOCAL_SHARED_LIBRARIES := liblog libcutils
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_SHARED_LIBRARIES)
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/lib
 
 include $(BUILD_SHARED_LIBRARY)
 
@@ -67,25 +62,4 @@ LOCAL_SRC_FILES := calmodule.cfg
 
 include $(BUILD_PREBUILT)
 
-include $(CLEAR_VARS)
-
-LOCAL_MODULE := sensors.$(TARGET_BOARD_PLATFORM)
-
-LOCAL_MODULE_RELATIVE_PATH := hw
-LOCAL_VENDOR_MODULE := true
-
-LOCAL_CFLAGS := -DLOG_TAG=\"MultiHal\"
-
-LOCAL_SRC_FILES := \
-    multihal.cpp \
-    SensorEventQueue.cpp \
-
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    libdl \
-    liblog \
-    libutils \
-
-LOCAL_STRIP_MODULE := false
-
-include $(BUILD_SHARED_LIBRARY)
+endif
