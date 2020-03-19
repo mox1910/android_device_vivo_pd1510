@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2017, The Linux Foundataion. All rights reserved.
+/* Copyright (c) 2012-2015, The Linux Foundataion. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are
@@ -36,7 +36,8 @@
 #include <stdlib.h>
 #include <utils/Errors.h>
 #include <utils/Trace.h>
-#include "gralloc_priv.h"
+#include <gralloc_priv.h>
+#include <gui/Surface.h>
 
 #include "QCamera2HWI.h"
 #include "QCameraMem.h"
@@ -58,37 +59,38 @@ qcamera_saved_sizes_list savedSizes[MM_CAMERA_MAX_NUM_SENSORS];
 
 static pthread_mutex_t g_camlock = PTHREAD_MUTEX_INITIALIZER;
 volatile uint32_t gCamHalLogLevel = 0;
+unsigned int QCamera2HardwareInterface::mCameraSessionActive = 0;
 
 camera_device_ops_t QCamera2HardwareInterface::mCameraOps = {
-    .set_preview_window =         QCamera2HardwareInterface::set_preview_window,
-    .set_callbacks =              QCamera2HardwareInterface::set_CallBacks,
-    .enable_msg_type =            QCamera2HardwareInterface::enable_msg_type,
-    .disable_msg_type =           QCamera2HardwareInterface::disable_msg_type,
-    .msg_type_enabled =           QCamera2HardwareInterface::msg_type_enabled,
+    set_preview_window:         QCamera2HardwareInterface::set_preview_window,
+    set_callbacks:              QCamera2HardwareInterface::set_CallBacks,
+    enable_msg_type:            QCamera2HardwareInterface::enable_msg_type,
+    disable_msg_type:           QCamera2HardwareInterface::disable_msg_type,
+    msg_type_enabled:           QCamera2HardwareInterface::msg_type_enabled,
 
-    .start_preview =              QCamera2HardwareInterface::start_preview,
-    .stop_preview =               QCamera2HardwareInterface::stop_preview,
-    .preview_enabled =            QCamera2HardwareInterface::preview_enabled,
-    .store_meta_data_in_buffers = QCamera2HardwareInterface::store_meta_data_in_buffers,
+    start_preview:              QCamera2HardwareInterface::start_preview,
+    stop_preview:               QCamera2HardwareInterface::stop_preview,
+    preview_enabled:            QCamera2HardwareInterface::preview_enabled,
+    store_meta_data_in_buffers: QCamera2HardwareInterface::store_meta_data_in_buffers,
 
-    .start_recording =            QCamera2HardwareInterface::start_recording,
-    .stop_recording =             QCamera2HardwareInterface::stop_recording,
-    .recording_enabled =          QCamera2HardwareInterface::recording_enabled,
-    .release_recording_frame =    QCamera2HardwareInterface::release_recording_frame,
+    start_recording:            QCamera2HardwareInterface::start_recording,
+    stop_recording:             QCamera2HardwareInterface::stop_recording,
+    recording_enabled:          QCamera2HardwareInterface::recording_enabled,
+    release_recording_frame:    QCamera2HardwareInterface::release_recording_frame,
 
-    .auto_focus =                 QCamera2HardwareInterface::auto_focus,
-    .cancel_auto_focus =          QCamera2HardwareInterface::cancel_auto_focus,
+    auto_focus:                 QCamera2HardwareInterface::auto_focus,
+    cancel_auto_focus:          QCamera2HardwareInterface::cancel_auto_focus,
 
-    .take_picture =               QCamera2HardwareInterface::take_picture,
-    .cancel_picture =             QCamera2HardwareInterface::cancel_picture,
+    take_picture:               QCamera2HardwareInterface::take_picture,
+    cancel_picture:             QCamera2HardwareInterface::cancel_picture,
 
-    .set_parameters =             QCamera2HardwareInterface::set_parameters,
-    .get_parameters =             QCamera2HardwareInterface::get_parameters,
-    .put_parameters =             QCamera2HardwareInterface::put_parameters,
-    .send_command =               QCamera2HardwareInterface::send_command,
+    set_parameters:             QCamera2HardwareInterface::set_parameters,
+    get_parameters:             QCamera2HardwareInterface::get_parameters,
+    put_parameters:             QCamera2HardwareInterface::put_parameters,
+    send_command:               QCamera2HardwareInterface::send_command,
 
-    .release =                    QCamera2HardwareInterface::release,
-    .dump =                       QCamera2HardwareInterface::dump,
+    release:                    QCamera2HardwareInterface::release,
+    dump:                       QCamera2HardwareInterface::dump,
 };
 
 /*===========================================================================
@@ -519,7 +521,6 @@ int QCamera2HardwareInterface::recording_enabled(struct camera_device *device)
 void QCamera2HardwareInterface::release_recording_frame(
             struct camera_device *device, const void *opaque)
 {
-    int32_t ret = NO_ERROR;
     ATRACE_CALL();
     QCamera2HardwareInterface *hw =
         reinterpret_cast<QCamera2HardwareInterface *>(device->priv);
@@ -532,21 +533,9 @@ void QCamera2HardwareInterface::release_recording_frame(
         return;
     }
     CDBG("%s: E", __func__);
-
-    //Close and delete duplicated native handle and FD's
-    if ((hw->mVideoMem != NULL)&&(hw->mStoreMetaDataInFrame>0)) {
-        ret = hw->mVideoMem->closeNativeHandle(opaque,TRUE);
-        if (ret != NO_ERROR) {
-            ALOGE("Invalid video metadata");
-            return;
-        }
-    } else {
-        ALOGW("Possible FD leak. Release recording called after stop");
-    }
-
     hw->lockAPI();
     qcamera_api_result_t apiResult;
-    ret = hw->processAPI(QCAMERA_SM_EVT_RELEASE_RECORIDNG_FRAME, (void *)opaque);
+    int32_t ret = hw->processAPI(QCAMERA_SM_EVT_RELEASE_RECORIDNG_FRAME, (void *)opaque);
     if (ret == NO_ERROR) {
         hw->waitAPIResult(QCAMERA_SM_EVT_RELEASE_RECORIDNG_FRAME, &apiResult);
     }
@@ -929,6 +918,9 @@ int QCamera2HardwareInterface::close_camera_device(hw_device_t *hw_dev)
     }
     delete hw;
 
+    pthread_mutex_lock(&g_camlock);
+    mCameraSessionActive = 0;
+    pthread_mutex_unlock(&g_camlock);
     CDBG_HIGH("[KPI Perf] %s: X",__func__);
     return ret;
 }
@@ -1029,8 +1021,7 @@ QCamera2HardwareInterface::QCamera2HardwareInterface(uint32_t cameraId)
       mPreviewFrameSkipValid(0),
       mNumPreviewFaces(-1),
       mAdvancedCaptureConfigured(false),
-      mFPSReconfigure(false),
-      mVideoMem(NULL)
+      mFPSReconfigure(false)
 {
 #ifdef TARGET_TS_MAKEUP
     mMakeUpBuf = NULL;
@@ -1127,10 +1118,15 @@ int QCamera2HardwareInterface::openCamera(struct hw_device_t **hw_device)
     ATRACE_CALL();
     int rc = NO_ERROR;
 
-    if (!check_cam_access(mCameraId)) {
+    pthread_mutex_lock(&g_camlock);
+    // if mCameraSessionActive is 1 then return EUSERS to indicate MAX_CAMERAS_IN_USE to APP
+    // TODO: This needs to be replaced by checking SENSOR combination & Number of VFE's
+    if (mCameraSessionActive) {
         ALOGE("%s: multiple simultaneous camera instance not supported", __func__);
+        pthread_mutex_unlock(&g_camlock);
         return -EUSERS;
     }
+    pthread_mutex_unlock(&g_camlock);
 
     if (mCameraOpened) {
         *hw_device = NULL;
@@ -1140,6 +1136,9 @@ int QCamera2HardwareInterface::openCamera(struct hw_device_t **hw_device)
     rc = openCamera();
     if (rc == NO_ERROR){
         *hw_device = &mCameraDevice.common;
+        pthread_mutex_lock(&g_camlock);
+        mCameraSessionActive = 1;
+        pthread_mutex_unlock(&g_camlock);
         if (m_thermalAdapter.init(this) != 0) {
           ALOGE("Init thermal adapter failed");
         }
@@ -1254,6 +1253,25 @@ int QCamera2HardwareInterface::openCamera()
                                   size_4k_2k);
        if (found) {
           gCamCapability[mCameraId]->video_sizes_tbl_cnt--;
+       }
+    }
+
+    //check if video preview 480p support is enabled
+    property_get("persist.camera.480p_preview.enable", value, "0");
+    enable_4k2k = atoi(value) > 0 ? 1 : 0;
+    ALOGD("%s: enable_480p_preview is %d", __func__, enable_4k2k);
+    if (!enable_4k2k) {
+       //if the 480p size exists in the supported preview size, remove it
+       bool found;
+       cam_dimension_t size_480p;
+       size_480p.width = 720;
+       size_480p.height = 480;
+
+       found = removeSizeFromList(gCamCapability[mCameraId]->preview_sizes_tbl,
+                                  gCamCapability[mCameraId]->preview_sizes_tbl_cnt,
+                                  size_480p);
+       if (found) {
+          gCamCapability[mCameraId]->preview_sizes_tbl_cnt--;
        }
     }
 
@@ -1537,7 +1555,8 @@ uint8_t QCamera2HardwareInterface::getBufNumRequired(cam_stream_type_t stream_ty
                 ALOGE("get_min_undequeued_buffer_count  failed");
             }
         } else {
-            //preview window might not be set at this point.
+            //preview window might not be set at this point. So, query directly
+            //from BufferQueue implementation of gralloc buffers.
             minUndequeCount = 2;
         }
     }
@@ -1588,14 +1607,12 @@ uint8_t QCamera2HardwareInterface::getBufNumRequired(cam_stream_type_t stream_ty
                 if (minCaptureBuffers == 1 && !mLongshotEnabled) {
                     // Single ZSL snapshot case
                     bufferCnt = zslQBuffers + CAMERA_MIN_STREAMING_BUFFERS +
-                            mParameters.getNumOfExtraBuffersForImageProc() +
-                            mParameters.getNumOfExtraHDRInBufsIfNeeded();
+                            mParameters.getNumOfExtraBuffersForImageProc();
                 }
                 else {
                     // ZSL Burst or Longshot case
                     bufferCnt = zslQBuffers + minCircularBufNum +
-                            mParameters.getNumOfExtraBuffersForImageProc() +
-                            mParameters.getNumOfExtraHDRInBufsIfNeeded();
+                            mParameters.getNumOfExtraBuffersForImageProc();
                     if (isLongshotSnapLimited() && mLongshotEnabled) {
                         bufferCnt = mParameters.getNumOfBuffersForLongshotLimitedMode();
                     }
@@ -1727,7 +1744,6 @@ QCameraMemory *QCamera2HardwareInterface::allocateStreamBuf(
         {
             if (isNoDisplayMode()) {
                 mem = new QCameraStreamMemory(mGetMemory,
-                        mCallbackCookie,
                         bCachedMem,
                         (bPoolMem) ? &m_memoryPool : NULL,
                         stream_type);
@@ -1735,7 +1751,7 @@ QCameraMemory *QCamera2HardwareInterface::allocateStreamBuf(
                 cam_dimension_t dim;
                 int minFPS, maxFPS;
                 QCameraGrallocMemory *grallocMemory =
-                    new QCameraGrallocMemory(mGetMemory, mCallbackCookie);
+                    new QCameraGrallocMemory(mGetMemory);
 
                 mParameters.getStreamDimension(stream_type, dim);
                 /* we are interested only in maxfps here */
@@ -1751,12 +1767,12 @@ QCameraMemory *QCamera2HardwareInterface::allocateStreamBuf(
     case CAM_STREAM_TYPE_POSTVIEW:
         {
             if (isPreviewRestartEnabled() || isNoDisplayMode()) {
-                mem = new QCameraStreamMemory(mGetMemory, mCallbackCookie, bCachedMem);
+                mem = new QCameraStreamMemory(mGetMemory, bCachedMem);
             } else {
                 cam_dimension_t dim;
                 int minFPS, maxFPS;
                 QCameraGrallocMemory *grallocMemory =
-                    new QCameraGrallocMemory(mGetMemory, mCallbackCookie);
+                    new QCameraGrallocMemory(mGetMemory);
 
                 mParameters.getStreamDimension(stream_type, dim);
                 /* we are interested only in maxfps here */
@@ -1778,7 +1794,6 @@ QCameraMemory *QCamera2HardwareInterface::allocateStreamBuf(
     case CAM_STREAM_TYPE_METADATA:
     case CAM_STREAM_TYPE_OFFLINE_PROC:
         mem = new QCameraStreamMemory(mGetMemory,
-                mCallbackCookie,
                 bCachedMem,
                 (bPoolMem) ? &m_memoryPool : NULL,
                 stream_type);
@@ -1789,9 +1804,7 @@ QCameraMemory *QCamera2HardwareInterface::allocateStreamBuf(
             bCachedMem = mParameters.isVideoBuffersCached();
             CDBG_HIGH("%s: %s video buf allocated ", __func__,
                     (bCachedMem == 0) ? "Uncached" : "Cached" );
-            QCameraVideoMemory *videoMemory = new QCameraVideoMemory(mGetMemory, mCallbackCookie, bCachedMem);
-            mem = videoMemory;
-            mVideoMem = videoMemory;
+            mem = new QCameraVideoMemory(mGetMemory, bCachedMem);
         }
         break;
     case CAM_STREAM_TYPE_DEFAULT:
@@ -2184,7 +2197,6 @@ int QCamera2HardwareInterface::startRecording()
 {
     int32_t rc = NO_ERROR;
     CDBG_HIGH("%s: E", __func__);
-    mVideoMem = NULL;
     if (mParameters.getRecordingHintValue() == false) {
         CDBG_HIGH("%s: start recording when hint is false, stop preview first", __func__);
         stopPreview();
@@ -2258,7 +2270,6 @@ int QCamera2HardwareInterface::stopRecording()
 {
     CDBG_HIGH("%s: E", __func__);
     int rc = stopChannel(QCAMERA_CH_TYPE_VIDEO);
-    m_cbNotifier.flushVideoNotifications();
 
 #ifdef HAS_MULTIMEDIA_HINTS
     if (m_pPowerModule) {
@@ -2267,7 +2278,6 @@ int QCamera2HardwareInterface::stopRecording()
         }
     }
 #endif
-    mVideoMem = NULL;
     CDBG_HIGH("%s: X", __func__);
     return rc;
 }

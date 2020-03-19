@@ -1,1 +1,2 @@
-set_prop(system_server, compass_prop)
+# For libcalmodule_akm.so
+allow system_server default_prop:property_service set;

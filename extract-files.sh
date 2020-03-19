@@ -1,67 +1,61 @@
 #!/bin/bash
-#
-# Copyright (C) 2018 The LineageOS Project
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
 
-set -e
+#set -e
+export DEVICE=pd1510
+export VENDOR=vivo
 
-DEVICE=pd1510
-VENDOR=vivo
-
-# Load extract_utils and do some sanity checks
-MY_DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
-
-LINEAGE_ROOT="$MY_DIR"/../../..
-
-HELPER="$LINEAGE_ROOT"/vendor/lineage/build/tools/extract_utils.sh
-if [ ! -f "$HELPER" ]; then
-    echo "Unable to find helper script at $HELPER"
+if [ $# -eq 0 ]; then
+  SRC=adb
+else
+  if [ $# -eq 1 ]; then
+    SRC=$1
+  else
+    echo "$0: bad number of arguments"
+    echo ""
+    echo "usage: $0 [PATH_TO_EXPANDED_ROM]"
+    echo ""
+    echo "If PATH_TO_EXPANDED_ROM is not specified, blobs will be extracted from"
+    echo "the device using adb pull."
     exit 1
-fi
-. "$HELPER"
-
-# Default to sanitizing the vendor folder before extraction
-CLEAN_VENDOR=true
-
-while [ "$1" != "" ]; do
-    case $1 in
-        -n | --no-cleanup )     CLEAN_VENDOR=false
-                                ;;
-        -s | --section )        shift
-                                SECTION=$1
-                                CLEAN_VENDOR=false
-                                ;;
-        * )                     SRC=$1
-                                ;;
-    esac
-    shift
-done
-
-if [ -z "$SRC" ]; then
-    SRC=adb
+  fi
 fi
 
-# Initialize the helper
-setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false "$CLEAN_VENDOR"
+function extract() {
+    for FILE in `egrep -v '(^#|^$)' $1`; do
+      OLDIFS=$IFS IFS=":" PARSING_ARRAY=($FILE) IFS=$OLDIFS
+      FILE=`echo ${PARSING_ARRAY[0]} | sed -e "s/^-//g"`
+      DEST=${PARSING_ARRAY[1]}
+      if [ -z $DEST ]
+      then
+        DEST=$FILE
+      fi
+      DIR=`dirname $DEST`
+      if [ ! -d $BASE/$DIR ]; then
+        mkdir -p $BASE/$DIR
+      fi
+      # Try CM target first
+      if [ "$SRC" = "adb" ]; then
+        adb pull /system/$DEST $BASE/$DEST
+        # if file does not exist try OEM target
+        if [ "$?" != "0" ]; then
+            adb pull /system/$FILE $BASE/$DEST
+        fi
+      else
+        if [ -z $SRC/system/$DEST ]; then
+            echo ":: $DEST"
+            cp $SRC/system/$DEST $BASE/$DEST
+        else
+            echo ":: $FILE"
+            cp $SRC/system/$FILE $BASE/$DEST
+        fi
+      fi
+    done
+}
 
-extract "$MY_DIR"/proprietary-files.txt "$SRC" "$SECTION"
-extract "$MY_DIR"/proprietary-files-twrp.txt "$SRC" "$SECTION"
+BASE=../../../vendor/$VENDOR/$DEVICE/proprietary
+rm -rf $BASE/*
 
-TWRP_QSEECOMD="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary/recovery/root/sbin/qseecomd
+extract ../../$VENDOR/$DEVICE/proprietary-files-qc.txt $BASE
+extract ../../$VENDOR/$DEVICE/proprietary-files.txt $BASE
 
-sed -i "s|/system/bin/linker|/sbin/linker\x0\x0\x0\x0\x0\x0|g" "$TWRP_QSEECOMD"
-
-"$MY_DIR"/setup-makefiles.sh
+./setup-makefiles.sh

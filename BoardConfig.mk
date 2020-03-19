@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018 The LineageOS Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,17 +21,61 @@ include device/cyanogen/msm8916-common/BoardConfigCommon.mk
 
 DEVICE_PATH := device/vivo/pd1510
 
+TARGET_SPECIFIC_HEADER_PATH := $(DEVICE_PATH)/include
+
+# Bootloader
+TARGET_BOOTLOADER_BOARD_NAME :=
+
+# Kernel
+BOARD_KERNEL_BASE := 0x80000000
+BOARD_KERNEL_PAGESIZE := 2048
+BOARD_MKBOOTIMG_ARGS :=  --kernel_offset 0x00008000 --ramdisk_offset 0x02000000 --tags_offset 0x00000100 --dt $(DEVICE_PATH)/prebuilt/dt.img
+BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/mkbootimg.mk
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+BOARD_KERNEL_CMDLINE += phy-msm-usb.floated_charger_enable=1 androidboot.selinux=permissive
+
+# CPU
+TARGET_CPU_CORTEX_A53 := true
+
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
+
+# Display
+TARGET_CONTINUOUS_SPLASH_ENABLED := false
+TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
+MAX_VIRTUAL_DISPLAY_DIMENSION := 2048
 
 # Camera
 BOARD_CAMERA_SENSORS := ov13853_q13853a ov8858_2a ov8858 s5k4h8_rear \
     ov5648 s5k4h8 s5k5e2 hi259
-BOARD_GLOBAL_CFLAGS += -DCAMERA_VENDOR_L_COMPAT
+TARGET_USE_VENDOR_CAMERA_EXT := true
 USE_DEVICE_SPECIFIC_CAMERA := true
-TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
+TARGET_TS_MAKEUP := true
 
-# Filesystem
+# DPM NSRM Feature
+TARGET_LDPRELOAD := libNimsWrap.so
+
+# Flags
+COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
+
+# FM
+AUDIO_FEATURE_ENABLED_FM := true
+TARGET_QCOM_NO_FM_FIRMWARE := true
+
+# Fonts
+EXTENDED_FONT_FOOTPRINT := true
+
+# GPS
+TARGET_GPS_HAL_PATH := $(DEVICE_PATH)/gps
+TARGET_NO_RPC := true
+
+# Lights
+TARGET_PROVIDES_LIBLIGHT := true
+
+# Prebuilt webview
+PRODUCT_PREBUILT_WEBVIEWCHROMIUM := yes
+
+# Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_CACHEIMAGE_PARTITION_SIZE := 149946368
@@ -41,44 +85,25 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3119513600
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 11658067968
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
-TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
-
-# GPS
-TARGET_NO_RPC := true
-USE_DEVICE_SPECIFIC_GPS := true
-
-# Kernel
-BOARD_DTBTOOL_ARGS := -2
-BOARD_KERNEL_IMAGE_NAME := Image
-BOARD_KERNEL_SEPARATED_DT := true
-TARGET_KERNEL_SOURCE := kernel/vivo/msm8916
-TARGET_KERNEL_CONFIG := lineageos_pd1510_defconfig
-BOARD_KERNEL_CMDLINE += phy-msm-usb.floated_charger_enable=1 androidboot.selinux=permissive
-
-# Power
-TARGET_HAS_NO_POWER_STATS := true
-
-# Properties
-TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 
-# SELinux
-BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
-# Shims
-TARGET_LD_SHIM_LIBS += \
-    /system/vendor/lib/libmmcamera2_imglib_modules.so|libshim_camera.so \
-    /system/vendor/lib/lib-imsvt.so|libshims_ims.so
+BOARD_SEPOLICY_DIRS += \
+    $(DEVICE_PATH)/sepolicy
 
-# HIDL
-DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+BOARD_SEPOLICY_UNION += \
+    memcheck.te \
+    irsc_util.te \
+    mm-qcamerad.te \
+    system_server.te \
+    file_contexts
 
-# TWRP
-ifeq ($(WITH_TWRP),true)
-include $(DEVICE_PATH)/twrp.mk
-endif
+#Wifi
+WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/wlan.ko"
+WIFI_DRIVER_MODULE_NAME     := "wlan"
 
-# Inherit from proprietary files
-include vendor/vivo/pd1510/BoardConfigVendor.mk
+# inherit from the proprietary version
+-include vendor/vivo/pd1510/BoardConfigVendor.mk

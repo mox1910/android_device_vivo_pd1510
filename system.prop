@@ -1,34 +1,44 @@
 # Audio
-ro.vendor.audio.sdk.fluencetype=fluence
-persist.vendor.audio.fluence.voicecall=true
-persist.vendor.audio.fluence.voicerec=false
-persist.vendor.audio.fluence.speaker=false
+ro.qc.sdk.audio.fluencetype=fluence
+persist.audio.fluence.voicecall=true
+persist.audio.fluence.voicerec=false
+persist.audio.fluence.speaker=true
 
-# Camera
-persist.camera.cpp.duplication=false
-persist.camera.hal.debug.mask=0
-ro.camera.sensors=ov13853_q13853a,ov8858_2a,ov8858,s5k4h8_rear,ov5648,s5k4h8,s5k5e2,hi259
+# Connectivity Engine support
+persist.cne.feature=4
+persist.dpm.feature=3
+persist.data.target=dpm1
 
 # Display
 ro.sf.lcd_density=240
 
-# QEMU
-qemu.hw.mainkeys=0
+# Radio
+rild.libpath=/system/vendor/lib/libril-qc-qmi-1.so
+persist.radio.multisim.config=dsds
+ril.ecclist=112,911,110,122,119,120,000,118
+ril.ecclist1=112,911,110,122,119,120,000,118
+ril.subscription.types=RUIM
+persist.radio.rat_on=combine
+
+ro.ril.multi_rat_capable=true
+
+# Disable the thumbnail encoding in order to reduce the power
+persist.camera.tn.disable=1
+
+# use 3 threads max for dex2oat
+ro.sys.fw.dex2oat_thread_count=3
+
+# relax sensor fusion mag field filter
+ro.fusion.magfield.max=250
 
 # Factory Reset Protection
 ro.frp.pst=/dev/block/bootdevice/by-name/config
 
-# Fusion mag field filter
-ro.fusion.magfield.max=250
+# System property for PIP support
+persist.camera.pip.support=0
 
-# Perf
-ro.sys.fw.dex2oat_thread_count=3
+# Disable all camera debug
+persist.camera.hal.debug.mask=0
 
-# Radio
-persist.data.target=dpm1
-persist.radio.multisim.config=dsds
-persist.radio.custom_ecc=1
-persist.radio.ecc_hard_1=112,911,110,122,119,120,000,118
-persist.radio.ecc_hard_count=1
-rild.libpath=/system/vendor/lib/libril-qc-qmi-1.so
-ril.subscription.types=RUIM
+# Camera sensors
+ro.camera.sensors=ov13853_q13853a,ov8858_2a,ov8858,s5k4h8_rear,ov5648,s5k4h8,s5k5e2,hi259
