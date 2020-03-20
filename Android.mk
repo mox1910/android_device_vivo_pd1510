@@ -20,6 +20,8 @@ ifeq ($(TARGET_DEVICE), pd1510)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
 
+$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr/ && cp device/vivo/pd1510/prebuilt/dt.img $(OUT)/)
+
 include $(CLEAR_VARS)
 
 endif
