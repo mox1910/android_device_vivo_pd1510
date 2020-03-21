@@ -366,7 +366,3 @@ vendor/lib/libTimeService.so
 
 # WLAN
 lib/libwcnss_qmi.so
-lib/modules/pronto/pronto_wlan.ko
-
-# Sensor
-lib/hw/sensors.msm8916.so

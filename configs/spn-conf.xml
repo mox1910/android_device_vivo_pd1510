@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright (c) 2013, Qualcomm Technologies, Inc.
+ * All Rights Reserved.
+ * Qualcomm Technologies Proprietary and Confidential.
+ */
+-->
 <spnOverrides>
     <!-- China -->
     <spnOverride numeric="46000" spn="China Mobile" />
@@ -22,7 +29,4 @@
     <spnOverride numeric="45429" spn="PCCW" />
     <spnOverride numeric="45404" spn="Hutchison"  />
     <spnOverride numeric="45406" spn="Smartone"  />
-    <!--Smartfren -->
-    <spnOverride numeric="51009" spn="Smartfren"  />
-    <spnOverride numeric="51028" spn="Smartfren"  />
 </spnOverrides>

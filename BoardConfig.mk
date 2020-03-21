@@ -27,12 +27,10 @@ TARGET_SPECIFIC_HEADER_PATH := $(DEVICE_PATH)/include
 TARGET_BOOTLOADER_BOARD_NAME :=
 
 # Kernel
-BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS :=  --kernel_offset 0x00008000 --ramdisk_offset 0x02000000 --tags_offset 0x00000100 --dt $(DEVICE_PATH)/prebuilt/dt.img
 BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/mkbootimg.mk
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 BOARD_KERNEL_CMDLINE += phy-msm-usb.floated_charger_enable=1 androidboot.selinux=permissive
+TARGET_KERNEL_SOURCE := kernel/vivo/msm8916
+TARGET_KERNEL_CONFIG := cyanogenmod_pd1510_defconfig
 
 # CPU
 TARGET_CPU_CORTEX_A53 := true
